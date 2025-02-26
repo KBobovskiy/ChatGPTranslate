@@ -28,7 +28,7 @@
 #translation-popup div,
 #translation-popup pre {
     color: var(--main-color-black);
-    font-size: max(1rem, 16px);
+    font-size: min(max(1rem, 12px), 24px);
     margin: 0 0 4px;
     font-family: Arial, sans-serif;
 }
