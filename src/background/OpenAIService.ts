@@ -11,6 +11,13 @@ type GptInstruction = {
     content: string;
 };
 
+type RequestBody = {
+    model: string;
+    messages: GptInstruction[];
+    max_tokens?: number;
+    max_completion_tokens?: number;
+};
+
 class OpenAIService {
     readonly apiUrl = 'https://api.openai.com/v1/chat/completions';
     readonly ttsApiUrl = 'https://api.openai.com/v1/audio/speech';
@@ -25,17 +32,24 @@ class OpenAIService {
         const apiKey = await SettingsService.getAPIKey();
         const maxTokens = await SettingsService.getMaxTokens();
         const displayTokens = !!(await SettingsService.getDisplayTokens());
+        const body: RequestBody = {
+            model: gptModel,
+            messages: messages,
+        };
+        if (this.isOldModelWithMaxTokensSimplestCheck(gptModel)) {
+            body.max_tokens = maxTokens;
+            delete body.max_completion_tokens;
+        } else {
+            delete body.max_tokens;
+            body.max_completion_tokens = maxTokens;
+        }
         const response = await fetch(this.apiUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${apiKey}`,
             },
-            body: JSON.stringify({
-                model: gptModel,
-                messages: messages,
-                max_tokens: maxTokens,
-            }),
+            body: JSON.stringify(body),
         });
 
         const data = await response.json();
@@ -381,6 +395,17 @@ class OpenAIService {
 
     getTranslationErrorText(gptError: Error): string {
         return `${ErrorMessages.GptApiErrorHeader} ${gptError.message || 'Translation not available'}`;
+    }
+
+    isOldModelWithMaxTokensSimplestCheck(gptModel: string): boolean {
+        const gptModelLower = gptModel?.toLocaleLowerCase() ?? '';
+        if (gptModelLower.startsWith('gpt-4')) {
+            return true;
+        }
+
+        // GPT-4 models retirement date: January 14, 2027
+        // GPT-4o, GPT-4o mini, GPT-4.1 and GPT-4.1 mini
+        return false;
     }
 }
 
