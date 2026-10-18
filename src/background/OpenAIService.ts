@@ -80,6 +80,7 @@ class OpenAIService {
                 model: 'tts-1',
                 voice: 'alloy',
                 input: text,
+                response_format: 'mp3',
             }),
         });
 
