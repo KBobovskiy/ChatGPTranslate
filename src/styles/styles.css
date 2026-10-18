@@ -3,7 +3,8 @@
     --main-color-black: black;
     --main-color-grey-dark: #333;
     --main-color-grey-medium: #666;
-    --main-color-grey-light: #ccc;
+    --main-color-grey-light: #eee;
+    --border-color: #666;
     --elem-radius: 4px;
 
     position: fixed;
@@ -11,7 +12,7 @@
     left: 50vw;
     transform: translate(-50%, max(-50%, -40vh));
     background-color: var(--main-bg-color);
-    border: 1px solid var(--main-color-grey-light);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -39,7 +40,7 @@
 
 #translation-popup a {
     text-decoration: underline;
-    font-size: 0.75em;
+    font-size: max(0.75em, 12px);
 }
 
 #translation-popup .default-color:link {
@@ -112,38 +113,49 @@
     justify-content: start;
     gap: 0.5em;
     background: none;
+    margin: 4px 0;
+}
+
+#translation-popup .translation div strong,
+#translation-popup .translation div b,
+#translation-popup #change-lang-form label,
+#translation-popup #change-lang-form select,
+#translation-popup #change-lang-form button {
+    color: var(--main-color-black);
+    line-height: 1.2em;
+    font-size: min(max(1rem, 12px), 24px);
+    font-weight: normal;
+    font-family: Arial, sans-serif;
+}
+
+#translation-popup .translation div b {
+    font-weight: bold;
 }
 
 #translation-popup #change-lang-form label {
-    line-height: 1.2em;
-    font-size: 1em;
     background: none;
 }
 
 #translation-popup #change-lang-form select {
-    color: var(--main-color-black);
-    line-height: 1.2em;
-    font-size: 1em;
     background: none;
     margin: 0;
     padding: 0 0.5em;
-    height: 1.5em;
+    height: min(1.5em, 32px);
     width: 140px;
-    border: 1px solid var(--main-color-black);
+    border: 1px solid var(--border-color);
     border-radius: var(--elem-radius);
     appearance: auto;
 }
 
 #translation-popup #change-lang-form button {
-    color: var(--main-color-black);
-    height: 1.5em;
-    line-height: 1.2em;
-    font-size: 1em;
+    height: min(1.5em, 32px);
     padding: 0 0.5em;
     margin: 0;
     min-width: 90px;
     border-radius: var(--elem-radius);
+    border: 1px solid var(--border-color);
     cursor: pointer;
+    background-color: var(--main-color-grey-light);
 }
 
 .navbar-popup .footer {
